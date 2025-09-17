@@ -1,0 +1,34 @@
+name: Java CI with Maven
+
+# Определение событий, при которых будет запускаться workflow
+on:
+  push:
+    branches:
+      - main  # Запускать на пуши в основную ветку
+  pull_request:
+    branches:
+      - main  # Запускать на пулл-реквестах в основную ветку
+
+# Определение рабочих мест
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Рабочая среда - последняя версия Ubuntu
+
+    steps:
+      # Шаг 1: Checkout кода из репозитория
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Шаг 2: Установка JDK 11
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'  # Указываем версию JDK
+
+      # Шаг 3: Собираем проект и запускаем тесты с помощью Maven
+      - name: Build with Maven
+        run: mvn clean install
+
+      # Шаг 4: Запуск тестов с помощью Maven
+      - name: Run tests with Maven
+        run: mvn test
