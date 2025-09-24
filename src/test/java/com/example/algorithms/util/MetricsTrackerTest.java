@@ -1,4 +1,4 @@
-package com.example.algorithms;
+package com.example.algorithms.util;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
