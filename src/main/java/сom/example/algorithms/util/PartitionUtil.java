@@ -25,7 +25,7 @@ public class PartitionUtil {
     }
 
     /**
-     * Shuffles the array randomly using Fisher-Yates algorithm.
+     * Shuffles the array randomly using Fisher-Yates algorithm
      * @param arr The array to shuffle.
      * @param <T> Type of array elements.
      */
