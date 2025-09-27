@@ -59,6 +59,7 @@ public class Main {
 
     private static void runAlgorithms(Integer[] arr, String csvPath, MetricsTracker tracker, Random rand) {
         // Run MergeSort
+        tracker.incrementAllocation();
         Integer[] mergeArr = arr.clone();
         tracker.reset();
         new MergeSort().sort(mergeArr, tracker);

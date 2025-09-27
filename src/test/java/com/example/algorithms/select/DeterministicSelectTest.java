@@ -76,4 +76,33 @@ class DeterministicSelectTest {
         assertThrows(IllegalArgumentException.class, () -> select.select(arr, -1, tracker));
         assertThrows(IllegalArgumentException.class, () -> select.select(arr, 3, tracker));
     }
+
+    @Test
+    void testReverseSorted() {
+        Integer[] arr = new Integer[100];
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = arr.length - i;
+        }
+        Integer result = select.select(arr, arr.length / 2, tracker);
+        assertEquals(arr.length / 2 + 1, result); // Median for reverse sorted
+    }
+
+    @Test
+    void testAllDuplicatesTiny() {
+        Integer[] arr = new Integer[]{5, 5, 5}; // Tiny with all duplicates
+        for (int k = 0; k < arr.length; k++) {
+            assertEquals(5, select.select(arr, k, tracker));
+        }
+    }
+
+    @Test
+    void testTinyArrays() {
+        Integer[] arr = new Integer[]{3, 1, 4, 1, 5}; // n=5
+        assertEquals(1, select.select(arr, 0, tracker)); // Min
+        assertEquals(5, select.select(arr, 4, tracker)); // Max
+        assertEquals(3, select.select(arr, 2, tracker)); // Median
+
+        Integer[] two = new Integer[]{2, 1};
+        assertEquals(1, select.select(two, 0, tracker));
+    }
 }

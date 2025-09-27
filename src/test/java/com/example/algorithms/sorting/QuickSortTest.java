@@ -79,6 +79,30 @@ class QuickSortTest {
         assertTrue(tracker.getMaxDepth() <= 2 * log2n + 10); // Allow some slack
     }
 
+    @Test
+    void testRecursionDepth() {
+        Integer[] arr = generateRandomArray(1000);
+        quickSort.sort(arr, tracker);
+        int expectedMaxDepth = (int) (2 * Math.log(arr.length) / Math.log(2) + 10); // Loose bound
+        assertTrue(tracker.getMaxDepth() <= expectedMaxDepth, "Depth: " + tracker.getMaxDepth());
+    }
+
+    @Test
+    void testAllDuplicatesTiny() {
+        Integer[] arr = new Integer[]{5, 5, 5, 5}; // Tiny with duplicates
+        Integer[] expected = new Integer[]{5, 5, 5, 5};
+        quickSort.sort(arr, tracker);
+        assertArrayEquals(expected, arr);
+    }
+
+    @Test
+    void testTinyArray() {
+        Integer[] arr = new Integer[]{3, 1, 2};
+        Integer[] expected = new Integer[]{1, 2, 3};
+        quickSort.sort(arr, tracker);
+        assertArrayEquals(expected, arr);
+    }
+
     private Integer[] generateRandomArray(int size) {
         Random rand = new Random();
         Integer[] arr = new Integer[size];

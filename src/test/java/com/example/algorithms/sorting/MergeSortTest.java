@@ -67,6 +67,10 @@ class MergeSortTest {
         Integer[] single = new Integer[]{42};
         mergeSort.sort(single, tracker);
         assertArrayEquals(new Integer[]{42}, single);
+
+        Integer[] two = new Integer[]{2, 1};
+        mergeSort.sort(two, tracker);
+        assertArrayEquals(new Integer[]{1, 2}, two);
     }
 
     @Test
@@ -79,6 +83,14 @@ class MergeSortTest {
         assertTrue(tracker.getExecutionTimeNs() > 0);
         // Allocations: at least 1 for buffer
         assertTrue(tracker.getAllocations() >= 1);
+    }
+
+    @Test
+    void testAllDuplicatesTiny() {
+        Integer[] arr = new Integer[]{5, 5, 5}; // Tiny array with duplicates
+        Integer[] expected = new Integer[]{5, 5, 5};
+        mergeSort.sort(arr, tracker);
+        assertArrayEquals(expected, arr);
     }
 
     private Integer[] generateRandomArray(int size) {
