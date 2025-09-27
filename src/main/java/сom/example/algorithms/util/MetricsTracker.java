@@ -2,6 +2,8 @@ package сom.example.algorithms.util;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  * MetricsTracker is a utility class for tracking performance metrics in algorithms.
@@ -69,7 +71,11 @@ public class MetricsTracker {
      * @throws IOException If file writing fails.
      */
     public void writeToCSV(String filePath, int n, String algorithm) throws IOException {
+        boolean isNewFile = !Files.exists(Path.of(filePath));
         try (FileWriter writer = new FileWriter(filePath, true)) { // Append mode
+            if (isNewFile) {
+                writer.append("n,time_ns,depth,comparisons,allocations,algorithm\n");
+            }
             long timeNs = endTime - startTime;
             writer.append(String.format("%d,%d,%d,%d,%d,%s\n", n, timeNs, maxDepth, comparisons, allocations, algorithm));
         }
