@@ -32,6 +32,11 @@ public class DeterministicSelect {
         return result;
     }
 
+    /**
+     * Recursive helper for finding the k-th smallest element.
+     * T(n) = T(n/5) + T(7n/10) + O(n) -> Akra-Bazzi method,
+     * where p=1 (from integration), β≈0.794 < 1, thus Θ(n) worst-case complexity.
+     */
     private <T extends Comparable<T>> T selectHelper(T[] arr, int low, int high, int k, MetricsTracker tracker) {
         try {
             tracker.enterRecursion();

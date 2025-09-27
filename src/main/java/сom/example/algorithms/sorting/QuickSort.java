@@ -12,6 +12,8 @@ import java.util.Random;
 public class QuickSort {
 
     private static final Random RANDOM = new Random();
+    private static final int CUTOFF = 16; // Threshold for switching to insertion sort
+
 
     /**
      * Sorts the array using QuickSort.
@@ -29,11 +31,17 @@ public class QuickSort {
 
     /**
      * Recursive helper for sorting subarray from low to high.
+     * Average T(n) = 2T(n/2) + O(n) -> Master Case 2 (a=2, b=2, f(n)=O(n), n^log_b(a)=n),
+     * where a*f(n/b) = O(n) = f(n), thus average Θ(n log n). Worst case O(n^2) with bad pivot.
      */
     private <T extends Comparable<T>> void sortHelper(T[] arr, int low, int high, MetricsTracker tracker) {
         try {
             tracker.enterRecursion();
             while (low < high) {
+                if (high - low < CUTOFF) {
+                    insertionSort(arr, low, high, tracker); // Реализуй insertionSort аналогично MergeSort
+                    return;
+                }
                 int pivotIndex = partition(arr, low, high, tracker);
                 // Recurse on smaller partition, iterate over larger
                 if (pivotIndex - low < high - pivotIndex) {
@@ -75,4 +83,26 @@ public class QuickSort {
         PartitionUtil.swap(arr, low, j);
         return j;
     }
+
+    /**
+     * Insertion sort for small subarrays.
+     */
+    private <T extends Comparable<T>> void insertionSort(T[] arr, int low, int high, MetricsTracker tracker) {
+        for (int i = low + 1; i <= high; i++) {
+            T key = arr[i];
+            int j = i - 1;
+            while (j >= low) {
+                tracker.incrementComparison();
+                if (arr[j].compareTo(key) > 0) {
+                    arr[j + 1] = arr[j];
+                    j--;
+                } else {
+                    break;
+                }
+            }
+            arr[j + 1] = key;
+        }
+    }
+
+
 }

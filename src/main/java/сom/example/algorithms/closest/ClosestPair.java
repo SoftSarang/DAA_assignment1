@@ -46,6 +46,11 @@ public class ClosestPair {
         return minDistance;
     }
 
+    /**
+     * Recursive helper for finding the closest pair of points.
+     * T(n) = 2T(n/2) + O(n) -> Master Case 2 (a=2, b=2, f(n)=O(n), n^log_b(a)=n),
+     * where a*f(n/b) = O(n) = f(n), thus Θ(n log n).
+     */
     private double findClosestPairRecursive(Point[] pts, int left, int right, MetricsTracker tracker) {
         try {
             tracker.enterRecursion();
@@ -60,12 +65,23 @@ public class ClosestPair {
             double dRight = findClosestPairRecursive(pts, mid + 1, right, tracker);
             double d = Math.min(dLeft, dRight);
 
+
             // Build strip
+            tracker.incrementAllocation();
             Point[] strip = new Point[n];
             int stripSize = 0;
             for (int i = left; i <= right; i++) {
                 if (Math.abs(pts[i].x - midX) < d) {
-                    strip[stripSize++] = pts[i];
+                    boolean isDuplicate = false;
+                    for (int j = 0; j < stripSize; j++) {
+                        if (pts[i].x == strip[j].x && pts[i].y == strip[j].y) {
+                            isDuplicate = true;
+                            break;
+                        }
+                    }
+                    if (!isDuplicate) {
+                        strip[stripSize++] = pts[i];
+                    }
                 }
             }
             tracker.incrementAllocation(); // For strip array
@@ -86,16 +102,21 @@ public class ClosestPair {
         }
     }
 
+
+
     private double bruteForce(Point[] points, int low, int high, MetricsTracker tracker) {
         double minDistance = Double.POSITIVE_INFINITY;
         for (int i = low; i <= high; i++) {
             for (int j = i + 1; j <= high; j++) {
+                if (points[i].x == points[j].x && points[i].y == points[j].y) {
+                    continue;
+                }
                 double distance = distance(points[i], points[j], tracker);
                 minDistance = Math.min(minDistance, distance);
                 tracker.incrementComparison();
             }
         }
-        return minDistance;
+        return minDistance == Double.POSITIVE_INFINITY ? 0.0 : minDistance; // Если все дубликаты, возвращаем 0
     }
 
     private double distance(Point p1, Point p2, MetricsTracker tracker) {

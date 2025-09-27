@@ -30,6 +30,8 @@ public class MergeSort {
 
     /**
      * Recursive helper for sorting subarray from low to high.
+     * T(n) = 2T(n/2) + O(n) -> Master Case 2 (a=2, b=2, f(n)=O(n), n^log_b(a)=n),
+     * where a*f(n/b) = O(n) = f(n), thus Θ(n log n).
      */
     private <T extends Comparable<T>> void sortHelper(T[] arr, T[] buffer, int low, int high, MetricsTracker tracker) {
         try {

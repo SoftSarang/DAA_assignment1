@@ -54,6 +54,53 @@ class ClosestPairTest {
         assertThrows(IllegalArgumentException.class, () -> closestPair.findClosestPair(single, tracker));
     }
 
+    @Test
+    void testLargeSmallN() {
+        Random rand = new Random();
+        int size = 2000;
+        ClosestPair.Point[] points = new ClosestPair.Point[size];
+        for (int i = 0; i < size; i++) {
+            points[i] = new ClosestPair.Point(rand.nextDouble() * 100, rand.nextDouble() * 100);
+        }
+        double result = closestPair.findClosestPair(points, tracker);
+        double bruteForceMin = bruteForceClosest(points);
+        assertEquals(bruteForceMin, result, 1e-10);
+    }
+
+    @Test
+    void testDuplicatesTiny() {
+        ClosestPair.Point[] points = {
+                new ClosestPair.Point(1, 1),
+                new ClosestPair.Point(1, 1), // Duplicate
+                new ClosestPair.Point(2, 2)
+        };
+        double result = closestPair.findClosestPair(points, tracker);
+        double expected = Math.sqrt(2); // Distance between (1,1) and (2,2)
+        assertEquals(expected, result, 1e-10, "Distance should ignore duplicates");
+    }
+
+    @Test
+    void testAllDuplicatesTiny() {
+        ClosestPair.Point[] points = {
+                new ClosestPair.Point(1, 1),
+                new ClosestPair.Point(1, 1),
+                new ClosestPair.Point(1, 1)
+        };
+        double result = closestPair.findClosestPair(points, tracker);
+        assertEquals(0.0, result, 1e-10, "All duplicates should return 0.0 distance");
+    }
+
+    @Test
+    void testTinyArrayWithTwo() {
+        ClosestPair.Point[] points = {
+                new ClosestPair.Point(1, 1),
+                new ClosestPair.Point(2, 2)
+        };
+        double expected = Math.sqrt(2);
+        double result = closestPair.findClosestPair(points, tracker);
+        assertEquals(expected, result, 1e-10);
+    }
+
     private double bruteForceClosest(ClosestPair.Point[] points) {
         double minDistance = Double.POSITIVE_INFINITY;
         for (int i = 0; i < points.length; i++) {
