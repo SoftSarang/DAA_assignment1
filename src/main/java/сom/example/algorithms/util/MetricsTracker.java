@@ -68,10 +68,10 @@ public class MetricsTracker {
      * @param n The input size (e.g., array length).
      * @throws IOException If file writing fails.
      */
-    public void writeToCSV(String filePath, int n) throws IOException {
+    public void writeToCSV(String filePath, int n, String algorithm) throws IOException {
         try (FileWriter writer = new FileWriter(filePath, true)) { // Append mode
             long timeNs = endTime - startTime;
-            writer.append(String.format("%d,%d,%d,%d,%d\n", n, timeNs, maxDepth, comparisons, allocations));
+            writer.append(String.format("%d,%d,%d,%d,%d,%s\n", n, timeNs, maxDepth, comparisons, allocations, algorithm));
         }
     }
 

@@ -62,7 +62,7 @@ class MetricsTrackerTest {
         tracker.incrementComparison();
         tracker.enterRecursion();
         tracker.stop();
-        tracker.writeToCSV(csvPath.toString(), 100);
+        tracker.writeToCSV(csvPath.toString(), 100, "Algorithm");
 
         List<String> lines = Files.readAllLines(csvPath);
         assertEquals(1, lines.size());
