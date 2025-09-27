@@ -42,11 +42,8 @@ class ClosestPairTest {
         }
         double result = closestPair.findClosestPair(points, tracker);
         assertTrue(result >= 0);
-        // Validate against brute force for small subset if needed
-        if (size <= 2000) {
-            double bruteForceMin = bruteForceClosest(points);
-            assertEquals(bruteForceMin, result, 1e-10);
-        }
+        double bruteForceMin = bruteForceClosest(points);
+        assertEquals(bruteForceMin, result, 1e-10, "Closest pair distance mismatch");
     }
 
     @Test
