@@ -65,13 +65,21 @@ class MetricsTrackerTest {
         tracker.writeToCSV(csvPath.toString(), 100, "Algorithm");
 
         List<String> lines = Files.readAllLines(csvPath);
-        assertEquals(1, lines.size());
-        String[] parts = lines.get(0).split(",");
-        assertEquals("100", parts[0]); // n
-        assertTrue(Long.parseLong(parts[1]) > 0); // time
-        assertEquals("1", parts[2]); // depth
-        assertEquals("1", parts[3]); // comparisons
-        assertEquals("0", parts[4]); // allocations
+        assertEquals(2, lines.size(), "CSV should contain header and one data line");
+
+        // Проверка заголовка (первая строка)
+        String header = lines.get(0);
+        assertEquals("n,time_ns,depth,comparisons,allocations,algorithm", header.trim());
+
+        // Проверка данных (вторая строка)
+        String dataLine = lines.get(1);
+        String[] parts = dataLine.split(",");
+        assertEquals("100", parts[0].trim()); // n
+        assertTrue(Long.parseLong(parts[1].trim()) > 0); // time
+        assertEquals("1", parts[2].trim()); // depth
+        assertEquals("1", parts[3].trim()); // comparisons
+        assertEquals("0", parts[4].trim()); // allocations
+        assertEquals("Algorithm", parts[5].trim()); // algorithm
     }
 
     @Test
